@@ -2,12 +2,13 @@ import time
 
 from scapy.layers.l2 import Ether, ARP
 from scapy.sendrecv import sendp
-from scanner import Scanners
+from .scanner import Scanners
 
 
 class Deceiver:
-    def __init__(self):
-        pass
+    def __init__(self, logger):
+        self.logger = logger
+        self.logger.info("Deceiver module initialized!")
 
     def arp_kill(self, target_ip):
         arppkt = Ether() / ARP()

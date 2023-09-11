@@ -1,15 +1,18 @@
-from modules.flooder import Flooder
-from modules.deception import Deceiver
-from modules.scanner import Scanners
+from loki import Loki
+import argparse
 
 if __name__ == '__main__':
-    f = Flooder("192.168.2.1")
-    d = Deceiver()
-    s = Scanners()
-    #d.arp_kill_network()
-    #d.arp_kill("192.168.2.1")
+    parser = argparse.ArgumentParser(description="Loki - the modern network hacking toolkit")
+    parser.add_argument("--scanner", type=str, help="network to perform scan on")
+    parser.add_argument("--flood", type=str, help="ip to flood")
+    parser.add_argument("--console", action="store_true", help="start the loki console")
+    args = parser.parse_args()
 
-    #for i in range(0, 20):
-    #    p = Process(target=d.arp_deceive, args=())
-    #    p.start()
+    loki = Loki()
 
+    if args.scanner is not None:
+        loki.get_scanner().get_all_local_ips(args.scanner)
+    if args.flood is not None:
+        loki.get_flooder().tcp_syn_flood(args.flood)
+    if args.console:
+        loki.start_console()

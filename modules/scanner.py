@@ -5,18 +5,22 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 class Scanners:
-    def __init__(self):
-        pass
+    def __init__(self, logger):
+        self.logger = logger
+        self.logger.info("Scanner module inizialized!")
 
     def get_all_local_ips(self, network):
-        network = "192.168.2.0/24"  # Ändern Sie dies entsprechend Ihrem Netzwerk
+        NUM_THREADS = 20
+
+        self.logger.info(f"Setup to scan {network} now")
         ip_range = ipaddress.ip_network(network, strict=False)
 
         found_ips = []
-
-        with ThreadPoolExecutor(max_workers=20) as executor:
+        self.logger.info(f"Starting {NUM_THREADS} threads and start scan...")
+        with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:
             for ip in ip_range:
                 executor.submit(self.scan_target, ip, found_ips)
+        self.logger.debug(f"found {found_ips}")
         return found_ips
 
     def scan_target(self, ip, result_list):
