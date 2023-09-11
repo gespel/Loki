@@ -69,6 +69,11 @@ class Loki:
         elif userinput == "exit":
             print("Bye! Have a good one")
             exit(0)
+        elif userinput == "flood":
+            target_ip = input("Target ip: ")
+            target_port = input("Target port: ")
+            msg = input("Message to send: ")
+            self.f.udp_flood(target_ip, int(target_port), msg)
 
     def print_command_list(self):
         print("Enter one of the following commands to start the corresponding routine:")
